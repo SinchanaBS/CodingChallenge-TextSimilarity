@@ -9,8 +9,8 @@ app = Flask(__name__)
 def home():
     return render_template('index.html', title="landing_page")
  
-
 @app.route('/compute', methods = ['POST'])
+   
 def compute():
     #collecting sample1 and sample2 texts from the front end
     sample1 = request.form['sample1']
@@ -38,7 +38,12 @@ def compute():
         b2[b[c]] = b.count(b[c])
 
     #Cosine function to find similarity between the 2 texts
-       
+    similarityScore = cos_similarity(a2,b2)
+    
+    #Printing the final value
+    return "The similarity score between the 2 text samples is {}".format(str(similarityScore))
+
+def cos_similarity(a2,b2):
     #removing duplicates using sets and taking the common words between the texts
     k1, k2 = set(a2.keys()), set(b2.keys())
     intrsct = k1 & k2
@@ -63,8 +68,7 @@ def compute():
     else:
         fnl_scr = float(num_val) / den_val
 
-    #Printing the final value
-    return "The similarity score between the 2 text samples is {}".format(str(fnl_scr))
+    return fnl_scr   
 
 
 if __name__ == "__main__":
